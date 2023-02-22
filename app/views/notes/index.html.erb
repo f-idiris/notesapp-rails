@@ -1,0 +1,44 @@
+<% if user_signed_in? %>
+<h1>My Notes</h1>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Content Preview</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notes.each do |note| %>
+    <% if note.user == current_user %>
+      <tr>
+        <td><%= link_to note.title, note %></td>
+        <td><%= note.description %></td>
+        <td><%= note.full_content.html_safe[0,200]%>...</td>
+        <td><%= button_to "delete", note, form: { data: { turbo_confirm: "Are you sure?" } }, method: :delete,  class:"btn btn-outline-danger" %> </td>
+        <!-- <%= link_to "view", note, class:"btn btn-secondary" %> <%= link_to "edit", edit_note_path(note), class:"btn btn-secondary" %> -->
+      </tr>
+    <% end %>
+    <% end %> 
+  </tbody>
+</table>
+
+<%= link_to "New note", new_note_path, class:"btn btn-dark"%>
+
+<% else %>
+
+<div class="jumbotron">
+  <h1 class="display-4 text-center">Organize Your Projects</h1>
+  <p class="lead text-center">Sign up today for free and get started!</p>
+  <hr class="my-4">
+  <p></p>
+  <p class="lead text-center">
+    <a> <%= link_to 'Sign Up', new_user_registration_path, class:"btn btn-primary btn-lg"%> </a>
+    <a> <%= link_to 'Already have an account? Log in', new_user_session_path, class:"nav-link"%> </a>
+  </p>
+</div>
+
+<% end %>
